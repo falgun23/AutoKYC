@@ -89,7 +89,7 @@ def my_link():
                 print("Processing image...")
 
                 path = '/home/falcon/Desktop/devapp/static/uploads'
-                cv2.imwrite(os.path.join(path , 'waka.jpg'), img=frame)
+                cv2.imwrite(os.path.join(path , 'frame.jpg'), img=frame)
                 print("Processing image...")
                 img_ = cv2.imread('saved_img.jpg', cv2.IMREAD_ANYCOLOR)
         
