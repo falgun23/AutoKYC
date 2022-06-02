@@ -1,0 +1,6 @@
+flask
+os
+opencv-python3
+numpy
+image_simmilarity_meaasures
+face_recognition

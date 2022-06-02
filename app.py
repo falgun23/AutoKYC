@@ -10,17 +10,17 @@ import face_recognition
 app = Flask(__name__)
 
 
-
-@app.route("/")
+@app.route("/")             #HomePage
 def uploader():
+    
     path = 'static/uploads/'
-
     uploads = sorted(os.listdir(path), key=lambda x: os.path.getctime(
         path+x))        # Sorting as per image upload date and time
     print(uploads)
-    #uploads = os.listdir('static/uploads')
+    
     uploads = ['uploads/' + file for file in uploads]
     uploads.reverse()
+    
     # Pass filenames to front end for display in 'uploads' variable
     return render_template("index.html", uploads=uploads)
 
@@ -52,7 +52,7 @@ def upload_image():
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        #print('upload_image filename: ' + filename)
+
         flash('Image successfully uploaded and displayed below')
         return render_template('index.html', filename=filename)
     else:
@@ -65,9 +65,10 @@ def upload_file():                                       # This method is used t
     if request.method == 'POST':
         f = request.files['file']
         print(f.filename)
-        # f.save(secure_filename(f.filename))
+        
         filename = secure_filename(f.filename)
         f.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        
         # Redirect to route '/' for displaying images on front end
         return redirect("/")
 
@@ -88,7 +89,7 @@ def my_link():
                 cv2.waitKey(1000)
                 print("Processing image...")
 
-                path = '/home/falcon/Desktop/devapp/static/uploads'
+                path = '/home/falcon/Documents/Office Docs/AutoKYC-POC/static/uploads'
                 cv2.imwrite(os.path.join(path , 'frame.jpg'), img=frame)
                 print("Processing image...")
                 img_ = cv2.imread('saved_img.jpg', cv2.IMREAD_ANYCOLOR)
@@ -100,7 +101,6 @@ def my_link():
                 print("Program ended.")
                 cv2.destroyAllWindows()
                 break
-                #return redirect("/")
         
         except(KeyboardInterrupt):
             print("Turning off camera.")
@@ -129,32 +129,27 @@ def verify():
         return result
 
 
-    all_files = os.listdir('/home/falcon/Desktop/devapp/static/uploads')
+    all_files = os.listdir('/home/falcon/Documents/Office Docs/AutoKYC-POC/static/uploads')
     picture_files = []
+    
     for file in all_files:
         if file[-3:] == "png" or file[-4:] == "jpeg" or file[-3:] == "jpg":
             picture_files.append(file)
-    #outputs = []
+    
     i=0
     j=1
-    #for i in range(len(picture_files)-1):
-        #print('\n')
-        #for j in range(i+1,len(picture_files)):
+    
     input_1 = './static/uploads/' + picture_files[i]
     input_2 = './static/uploads/' + picture_files[j]
     outputs = face_compare(input_1,input_2)
-            #outputs.append(face_compare(input_1,input_2)) 
+
     print(picture_files[i] + '  ', picture_files[j] + ' ', outputs)
 
     if outputs ==[True]:
         return render_template('verify.html')
-                #print("verified")
             
     else:
         return render_template('not_verified.html')
-        #print("not verified")
-            #print(outputs)
-            #print('\n')
         
     return redirect("/")
 
